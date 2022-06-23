@@ -1,8 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getCurrencies } from '../actions';
 
 class Wallet extends React.Component {
+  componentDidMount = async () => {
+    this.filterUsdt();
+  }
+
+  filterUsdt = async () => {
+    const { dispatch } = this.props;
+    const result = getCurrencies();
+    dispatch(result);
+  }
+
   render() {
     const { user } = this.props;
     return (
@@ -41,6 +52,7 @@ const mapStateToProps = (state) => {
 
 Wallet.propTypes = {
   user: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Wallet);
