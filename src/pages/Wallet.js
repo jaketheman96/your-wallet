@@ -5,10 +5,6 @@ import { getCurrencies } from '../actions';
 
 class Wallet extends React.Component {
   componentDidMount = async () => {
-    this.filterUsdt();
-  }
-
-  filterUsdt = async () => {
     const { dispatch } = this.props;
     const result = getCurrencies();
     dispatch(result);
