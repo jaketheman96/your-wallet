@@ -39,37 +39,40 @@ class Login extends React.Component {
     return (
       <div className="login">
         <form>
-          <label htmlFor="email">
-            <p>Email: </p>
+          <fieldset>
+            <h2>Your TrybeWallet!</h2>
+            <label htmlFor="email">
+              <p>Email: </p>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={ email }
+                data-testid="email-input"
+                onChange={ this.handleChange }
+                required
+              />
+            </label>
+            <label htmlFor="password">
+              <p>Password:</p>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={ password }
+                data-testid="password-input"
+                onChange={ this.handleChange }
+                required
+              />
+            </label>
+            <br />
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={ email }
-              data-testid="email-input"
-              onChange={ this.handleChange }
-              required
+              type="button"
+              value="Entrar"
+              onClick={ this.handleClick }
+              disabled={ isButtonDisabled }
             />
-          </label>
-          <label htmlFor="password">
-            <p>Password:</p>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={ password }
-              data-testid="password-input"
-              onChange={ this.handleChange }
-              required
-            />
-          </label>
-          <br />
-          <input
-            type="button"
-            value="Entrar"
-            onClick={ this.handleClick }
-            disabled={ isButtonDisabled }
-          />
+          </fieldset>
         </form>
       </div>
     );
