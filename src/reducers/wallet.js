@@ -6,12 +6,18 @@ const INITIAL_STATE_WALLET = {
 };
 
 const walletReducer = (state = INITIAL_STATE_WALLET, action) => {
-  const { type, currencies } = action;
+  const { type, payload } = action;
+  const { expenses } = state;
   switch (type) {
-  case 'FETCH_SUCCESS':
+  case 'ADD_CURRENCIES':
     return {
       ...state,
-      currencies,
+      currencies: Object.keys(payload.infos).filter((item) => item !== 'USDT'),
+    };
+  case 'ADD_EXPENSES':
+    return {
+      ...state,
+      expenses: expenses.concat(Object.values(payload)),
     };
   default:
     return state;

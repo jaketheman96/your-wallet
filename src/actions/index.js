@@ -7,27 +7,38 @@ const addEmail = (email) => ({
 
 export default addEmail;
 
-export const FETCH_FAILED = 'FETCH_FAILED';
-export const FETCH_SUCCESS = 'FETCH_SUCCESS';
-
-export const fetchFailed = (error) => ({
-  type: FETCH_FAILED,
-  error,
-});
-
-export const fetchSuccess = (currencies) => ({
-  type: FETCH_SUCCESS,
-  currencies,
-});
-
-export const getCurrencies = () => async (dispatch) => {
+export const fetchApi = async () => {
   try {
     const urlApi = 'https://economia.awesomeapi.com.br/json/all';
-    const fetchUrl = await fetch(urlApi);
-    const response = await fetchUrl.json();
-    const withoutUsdt = Object.keys(response).filter((item) => item !== 'USDT');
-    dispatch(fetchSuccess(withoutUsdt));
+    const response = await fetch(urlApi);
+    const result = await response.json();
+    return {
+      infos: result,
+    };
   } catch (error) {
-    dispatch(fetchFailed());
+    throw new Error(error.message);
   }
+};
+
+export const ADD_CURRENCIES = 'ADD_CURRENCIES';
+
+export const getCurrencies = () => async (dispatch) => {
+  const apiReturned = await fetchApi();
+  const response = apiReturned;
+  dispatch({
+    type: ADD_CURRENCIES,
+    payload: response,
+  });
+};
+
+export const ADD_EXPENSES = 'ADD_EXPENSES';
+
+export const addExpenses = (allInfos) => async (dispatch) => {
+  const apiReturned = await fetchApi();
+  const rates = apiReturned.infos;
+  allInfos.infos.exchangeRates = rates;
+  dispatch({
+    type: ADD_EXPENSES,
+    payload: allInfos,
+  });
 };
