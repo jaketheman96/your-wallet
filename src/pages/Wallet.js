@@ -6,17 +6,18 @@ import { addExpenses, getCurrencies } from '../actions';
 class Wallet extends React.Component {
   state = {
     id: 0,
-    amount: 0,
+    value: 0,
+    currency: '',
+    method: '',
+    tag: '',
     description: '',
-    currencyInput: 'USD',
-    paymentMethod: 'Dinheiro',
-    category: 'Alimentação',
+    totalPrice: 0,
   }
 
   componentDidMount = async () => {
     const { dispatch } = this.props;
     const result = getCurrencies();
-    dispatch(result);
+    await dispatch(result);
   }
 
   handleChange = ({ target }) => {
@@ -26,62 +27,139 @@ class Wallet extends React.Component {
 
   handleClick = async () => {
     const { dispatch } = this.props;
+    const { id,
+      value,
+      description,
+      currency,
+      method,
+      tag } = this.state;
     this.setState((prev) => ({
       id: prev.id + 1,
     }));
-    const allStates = {
-      infos: this.state,
-    };
-    dispatch(addExpenses(allStates));
-    this.totalPriceWithCurrency();
+    const allStates = { id, value, description, currency, method, tag };
+    await dispatch(addExpenses(allStates));
+    await this.sumTotalPrice();
   }
 
-  totalPriceWithCurrency = () => {
+  sumTotalPrice = async () => {
     const { wallet: { expenses } } = this.props;
-    expenses.find((expense) => (
-      console.log(expense.exchangeRates[`${expense.currencyInput}`])
-    ));
-  };
+    if (!expenses) {
+      this.setState({ totalPrice: 0 });
+    } else {
+      let result = 0;
+      expenses
+        .map((total) => (
+          total.value * total.exchangeRates[total.currency].ask))
+        .forEach((element) => {
+          result += element;
+        });
+      this.setState({
+        totalPrice: result,
+        value: 0,
+        description: '',
+        currency: '',
+        method: '',
+        tag: '',
+      });
+    }
+  }
 
   render() {
-    const { user, wallet: { currencies } } = this.props;
     const {
-      amount,
+      user,
+      wallet: {
+        currencies,
+      },
+    } = this.props;
+    const {
+      value,
       description,
-      currencyInput,
-      paymentMethod,
-      category,
+      currency,
+      method,
+      tag,
+      totalPrice,
     } = this.state;
     return (
       <>
         <div className="user-welcome">
-          <h3
-            data-testid="email-field"
-          >
+          <h3 data-testid="email-field">
             {`Ola ${user}`}
           </h3>
         </div>
-        <div className="expenses" data-testid="total-field">
-          <p>
-            {amount}
-          </p>
-          <h2
-            data-testid="header-currency-field"
-          >
+        <div className="expenses">
+          <h2 data-testid="total-field">
+            {totalPrice}
+          </h2>
+          <h2 data-testid="header-currency-field">
             BRL
           </h2>
         </div>
         <form className="form-expenses">
-          <label htmlFor="amount">
+          <label htmlFor="value">
             <p>Valor:</p>
             <input
               type="number"
-              id="amount"
-              name="amount"
+              id="value"
+              name="value"
               data-testid="value-input"
               onChange={ this.handleChange }
-              value={ amount }
+              value={ value }
             />
+          </label>
+          <label htmlFor="currency" aria-label="Moeda">
+            <p>Moeda</p>
+            <select
+              id="currency"
+              name="currency"
+              onChange={ this.handleChange }
+              value={ currency }
+            >
+              <option value="" selected> </option>
+              {currencies.map((element) => (
+                <option
+                  value={ element }
+                  key={ element }
+                >
+                  {element}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label
+            htmlFor="method"
+            data-testid="method-input"
+          >
+            <p> Metodo de pagamento:</p>
+            <select
+              id="method"
+              name="method"
+              onChange={ this.handleChange }
+              value={ method }
+            >
+              <option value="" selected>None selected</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de débito">Cartão de débito</option>
+            </select>
+          </label>
+          <label
+            htmlFor="tag"
+            data-testid="tag-input"
+          >
+            <p>Categoria:</p>
+            <select
+              id="tag"
+              onChange={ this.handleChange }
+              value={ tag }
+              name="tag"
+            >
+              <option value="" selected>None selected</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
+            </select>
           </label>
           <label htmlFor="description">
             <p>Descricao:</p>
@@ -94,77 +172,7 @@ class Wallet extends React.Component {
               value={ description }
             />
           </label>
-          <label htmlFor="currencyInput">
-            <p>Moeda</p>
-            <select
-              id="currencyInput"
-              name="currencyInput"
-              onChange={ this.handleChange }
-              value={ currencyInput }
-            >
-              {currencies.map((currency) => (
-                <option
-                  value={ currency }
-                  key={ currency }
-                >
-                  {currency}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label
-            htmlFor="payment-method"
-            data-testid="method-input"
-          >
-            <p> Metodo de pagamento:</p>
-            <select
-              id="payment-method"
-              name="payment-method"
-              onChange={ this.handleChange }
-              value={ paymentMethod }
-            >
-              <option value="dinheiro">Dinheiro</option>
-              <option value="credito">Cartão de crédito</option>
-              <option value="debito">Cartão de débito</option>
-            </select>
-          </label>
-          <label
-            htmlFor="expense-tag"
-            data-testid="tag-input"
-          >
-            <p>Categoria:</p>
-            <select
-              id="expense-tag"
-              onChange={ this.handleChange }
-              value={ category }
-            >
-              <option
-                value="Alimentação"
-              >
-                Alimentação
-              </option>
-              <option
-                value="Lazer"
-              >
-                Lazer
-              </option>
-              <option
-                value="Trabalho"
-              >
-                Trabalho
-              </option>
-              <option
-                value="Transporte"
-              >
-                Transporte
-              </option>
-              <option
-                value="Saúde"
-              >
-                Saúde
-              </option>
-            </select>
-          </label>
+          <br />
           <input
             type="button"
             value="Adicionar despesa"

@@ -35,8 +35,7 @@ export const ADD_EXPENSES = 'ADD_EXPENSES';
 
 export const addExpenses = (allInfos) => async (dispatch) => {
   const apiReturned = await fetchApi();
-  const rates = apiReturned.infos;
-  allInfos.infos.exchangeRates = rates;
+  allInfos.exchangeRates = apiReturned.infos;
   dispatch({
     type: ADD_EXPENSES,
     payload: allInfos,

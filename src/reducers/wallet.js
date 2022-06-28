@@ -17,7 +17,7 @@ const walletReducer = (state = INITIAL_STATE_WALLET, action) => {
   case 'ADD_EXPENSES':
     return {
       ...state,
-      expenses: expenses.concat(Object.values(payload)),
+      expenses: expenses.concat(payload),
     };
   default:
     return state;
