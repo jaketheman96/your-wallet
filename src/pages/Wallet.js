@@ -182,46 +182,50 @@ class Wallet extends React.Component {
         <hr />
         <table>
           <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Tag</th>
+              <th>Método de pagamento</th>
+              <th>Valor</th>
+              <th>Moeda</th>
+              <th>Câmbio utilizado</th>
+              <th>Valor convertido</th>
+              <th>Moeda de conversão</th>
+              <th>Editar/Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
             {expenses.map((element) => (
               <tr key={ element.id }>
-                <th scope="col">Descrição</th>
                 <td>
                   {element.description}
                 </td>
-                <th scope="col">Tag</th>
                 <td>
                   {element.tag}
                 </td>
-                <th scope="col">Método de pagamento</th>
                 <td>
                   {element.method}
                 </td>
-                <th scope="col">Valor</th>
                 <td>
                   {`${Number(element.value).toFixed(2)}`}
                 </td>
-                <th scope="col">Moeda</th>
                 <td>
                   {element.exchangeRates[element.currency].code}
                 </td>
-                <th scope="col">Câmbio utilizado</th>
                 <td>
                   {Number(element.exchangeRates[element.currency].ask).toFixed(2)}
                 </td>
-                <th scope="col">Valor convertido</th>
                 <td>
                   {Number(element.value * element.exchangeRates[element.currency].ask)
                     .toFixed(2)}
                 </td>
                 <td>Real</td>
-                <th scope="col">Moeda de conversão</th>
                 <td>
                   {element.exchangeRates[element.currency].name}
                 </td>
-                <th scope="col">Editar/Excluir</th>
               </tr>
             ))}
-          </thead>
+          </tbody>
         </table>
       </>
     );
