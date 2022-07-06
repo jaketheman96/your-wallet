@@ -1,29 +1,217 @@
-body {
-  text-align: center;
+*,
+*:before,
+*:after {
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background-color: #acabb8;
 }
 
-.login {
-  display: flex;
-  justify-content: center;
+.background {
+  width: 430px;
+  height: 520px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
 }
 
-p {
-  margin: 5px;
+.background .shape {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  border-radius: 50%;
 }
 
-fieldset {
+.shape:first-child {
+  background: linear-gradient(#1845ad,
+      #23a2f6);
+  left: -80px;
+  top: -80px;
+}
+
+.shape:last-child {
+  background: linear-gradient(to right,
+      #ff512f,
+      #f09819);
+  right: -30px;
+  bottom: -80px;
+}
+
+.wallet-image {
   text-align: center;
-  border-width: 3px;
-  width: 300px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 520px;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.13);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 0px 35px;
+  padding-bottom: 20px;
+}
+
+.wallet-image {
+  align-items: center;
+}
+
+.loginForm * {
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.loginForm h3 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+}
+
+.labelLogin {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.loginInput {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+::placeholder {
+  color: #e5e5e5;
+}
+
+.loginButton {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #c4c4c4;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.loginButton:hover {
+  background-color: #60687C;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+}
+
+.social {
+  margin-top: 30px;
+  display: flex;
+}
+
+.social div {
+  background: red;
+  width: 150px;
+  border-radius: 3px;
+  padding: 5px 10px 10px 5px;
+  background-color: rgba(255, 255, 255, 0.27);
+  color: #eaf0fb;
+  text-align: center;
+}
+
+.social div:hover {
+  background-color: rgba(255, 255, 255, 0.47);
+}
+
+.social .fb {
+  margin-left: 25px;
+}
+
+.social i {
+  margin-right: 4px;
+}
+
+.user-infos {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: rgb(44, 44, 44);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  min-height: 100%;
+  position: relative;
+}
+
+.header-infos {
+  font-family: 'Poppins', sans-serif;
+  color: #000000;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.form-expenses {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  /* margin-bottom: 50px; */
+}
+
+table.redTable {
+  border: 0px solid #688189;
+  background-color: #EEE7DB;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+table.redTable td,
+table.redTable th {
+  border: 1px solid #AAAAAA;
+  padding: 3px 2px;
+}
+
+table.redTable tbody td {
+  font-size: 13px;
+}
+
+table.redTable tr:nth-child(even) {
+  background: #ECECEC;
+}
+
+table.redTable thead {
+  background: #707886;
+  background: -moz-linear-gradient(top, #949aa4 0%, #7e8592 66%, #707886 100%);
+  background: -webkit-linear-gradient(top, #949aa4 0%, #7e8592 66%, #707886 100%);
+  background: linear-gradient(to bottom, #949aa4 0%, #7e8592 66%, #707886 100%);
+  border-bottom: 1px solid #4D405D;
+}
+
+table.redTable thead th {
+  font-size: 19px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  border-left: 2px solid #60687C;
+}
+
+table.redTable thead th:first-child {
+  border-left: none;
 }

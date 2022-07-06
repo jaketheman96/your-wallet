@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addExpenses, getCurrencies } from '../actions';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   state = {
     id: 0,
     value: 0,
-    currency: '',
+    currency: 'USD',
     method: '',
     tag: '',
     description: '',
@@ -25,7 +26,8 @@ class Wallet extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleClick = async () => {
+  handleClick = async (event) => {
+    event.preventDefault();
     const { dispatch } = this.props;
     const { id,
       value,
@@ -57,7 +59,7 @@ class Wallet extends React.Component {
         totalPrice: result.toFixed(2),
         value: 0,
         description: '',
-        currency: '',
+        currency: 'USD',
         method: '',
         tag: '',
       });
@@ -67,10 +69,7 @@ class Wallet extends React.Component {
   render() {
     const {
       user,
-      wallet: {
-        currencies,
-        expenses,
-      },
+      wallet: { currencies },
     } = this.props;
     const {
       value,
@@ -82,22 +81,21 @@ class Wallet extends React.Component {
     } = this.state;
     return (
       <>
-        <div className="user-welcome">
-          <h3 data-testid="email-field">
+        <div className="user-infos">
+          <h3 data-testid="email-field" className="header-infos">
             {`Ola ${user}`}
           </h3>
-        </div>
-        <div className="expenses">
-          <h2 data-testid="total-field">
-            {totalPrice}
-          </h2>
-          <h2 data-testid="header-currency-field">
+          <h3 className="header-infos">TrybeWallet</h3>
+          <h3 data-testid="total-field" className="header-infos">
+            {`Total: ${totalPrice} BRL`}
+          </h3>
+          {/* <h2 data-testid="header-currency-field" className="header-infos">
             BRL
-          </h2>
+          </h2> */}
         </div>
         <form className="form-expenses">
           <label htmlFor="value">
-            <p>Valor:</p>
+            Valor:
             <input
               type="number"
               id="value"
@@ -105,10 +103,11 @@ class Wallet extends React.Component {
               data-testid="value-input"
               onChange={ this.handleChange }
               value={ value }
+              className="login-input"
             />
           </label>
           <label htmlFor="currency" aria-label="Moeda">
-            <p>Moeda</p>
+            Moeda
             <select
               id="currency"
               name="currency"
@@ -128,7 +127,7 @@ class Wallet extends React.Component {
           <label
             htmlFor="method"
           >
-            <p> Metodo de pagamento:</p>
+            Metodo de pagamento:
             <select
               data-testid="method-input"
               id="method"
@@ -145,7 +144,7 @@ class Wallet extends React.Component {
           <label
             htmlFor="tag"
           >
-            <p>Categoria:</p>
+            Categoria:
             <select
               data-testid="tag-input"
               id="tag"
@@ -162,7 +161,7 @@ class Wallet extends React.Component {
             </select>
           </label>
           <label htmlFor="description">
-            <p>Descricao:</p>
+            Descrição:
             <input
               type="text"
               id="description"
@@ -170,63 +169,18 @@ class Wallet extends React.Component {
               data-testid="description-input"
               onChange={ this.handleChange }
               value={ description }
+              className="login-input"
             />
           </label>
-          <br />
-          <input
-            type="button"
-            value="Adicionar despesa"
+          <button
+            type="submit"
+            className="add-expenses"
             onClick={ this.handleClick }
-          />
+          >
+            Adicionar despesa
+          </button>
         </form>
-        <hr />
-        <table>
-          <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Tag</th>
-              <th>Método de pagamento</th>
-              <th>Valor</th>
-              <th>Moeda</th>
-              <th>Câmbio utilizado</th>
-              <th>Valor convertido</th>
-              <th>Moeda de conversão</th>
-              <th>Editar/Excluir</th>
-            </tr>
-          </thead>
-          <tbody>
-            {expenses.map((element) => (
-              <tr key={ element.id }>
-                <td>
-                  {element.description}
-                </td>
-                <td>
-                  {element.tag}
-                </td>
-                <td>
-                  {element.method}
-                </td>
-                <td>
-                  {`${Number(element.value).toFixed(2)}`}
-                </td>
-                <td>
-                  {element.exchangeRates[element.currency].code}
-                </td>
-                <td>
-                  {Number(element.exchangeRates[element.currency].ask).toFixed(2)}
-                </td>
-                <td>
-                  {Number(element.value * element.exchangeRates[element.currency].ask)
-                    .toFixed(2)}
-                </td>
-                <td>Real</td>
-                <td>
-                  {element.exchangeRates[element.currency].name}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table />
       </>
     );
   }
@@ -247,4 +201,5 @@ Wallet.propTypes = {
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
+
 export default connect(mapStateToProps, null)(Wallet);

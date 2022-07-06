@@ -38,41 +38,54 @@ class Login extends React.Component {
     const { email, password, isButtonDisabled } = this.state;
     return (
       <div className="login">
-        <form>
-          <fieldset>
-            <h2>Your TrybeWallet!</h2>
-            <label htmlFor="email">
-              <p>Email: </p>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={ email }
-                data-testid="email-input"
-                onChange={ this.handleChange }
-                required
-              />
-            </label>
-            <label htmlFor="password">
-              <p>Password:</p>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={ password }
-                data-testid="password-input"
-                onChange={ this.handleChange }
-                required
-              />
-            </label>
-            <br />
-            <input
-              type="button"
-              value="Entrar"
-              onClick={ this.handleClick }
-              disabled={ isButtonDisabled }
+        <form className="loginForm">
+          <div className="wallet-image">
+            <img
+              src="https://media.discordapp.net/attachments/971614587029954591/994040120258867220/Design_sem_nome-removebg-preview.png"
+              alt="wallet"
+              width="50%"
             />
-          </fieldset>
+          </div>
+          <label
+            htmlFor="email"
+            className="labelLogin"
+          >
+            <p>Email: </p>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={ email }
+              data-testid="email-input"
+              onChange={ this.handleChange }
+              className="loginInput"
+              required
+            />
+          </label>
+          <label
+            htmlFor="password"
+            className="labelLogin"
+          >
+            <p>Password:</p>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={ password }
+              data-testid="password-input"
+              onChange={ this.handleChange }
+              className="loginInput"
+              required
+            />
+          </label>
+          <button
+            type="submit"
+            onClick={ this.handleClick }
+            disabled={ isButtonDisabled }
+            className="loginButton"
+          >
+            Entrar
+          </button>
         </form>
       </div>
     );
