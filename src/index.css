@@ -7,7 +7,8 @@
 }
 
 body {
-  background-color: #acabb8;
+  background: url(images/osman-rana-h8ZvH1Nf7Bk-unsplash.jpg) no-repeat center center fixed; 
+  background-size: cover;
 }
 
 .background {
@@ -152,16 +153,16 @@ body {
 .user-infos {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background-color: rgb(44, 44, 44);
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 5px;
+  background-color: rgb(43, 92, 90);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
   min-height: 100%;
   position: relative;
 }
 
 .header-infos {
   font-family: 'Poppins', sans-serif;
-  color: #000000;
+  color: #0e1b21;
   letter-spacing: 0.5px;
   outline: none;
   border: none;
@@ -171,7 +172,6 @@ body {
   display: flex;
   justify-content: space-around;
   padding: 10px;
-  /* margin-bottom: 50px; */
 }
 
 table.redTable {
@@ -186,6 +186,11 @@ table.redTable td,
 table.redTable th {
   border: 1px solid #AAAAAA;
   padding: 3px 2px;
+}
+
+h3 {
+  color: rgb(2, 109, 109);
+  padding: 3px;
 }
 
 table.redTable tbody td {

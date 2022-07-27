@@ -15,10 +15,10 @@ class Wallet extends React.Component {
     totalPrice: 0,
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     const { dispatch } = this.props;
     const result = getCurrencies();
-    await dispatch(result);
+    dispatch(result);
   }
 
   handleChange = ({ target }) => {
@@ -66,6 +66,12 @@ class Wallet extends React.Component {
     }
   }
 
+  subtractTotal = (value) => {
+    this.setState((prev) => ({
+      totalPrice: (prev.totalPrice - value).toFixed(2),
+    }));
+  }
+
   render() {
     const {
       user,
@@ -80,22 +86,20 @@ class Wallet extends React.Component {
       totalPrice,
     } = this.state;
     return (
-      <>
-        <div className="user-infos">
+      <div>
+        <div
+          className="user-infos"
+        >
           <h3 data-testid="email-field" className="header-infos">
             {`Ola ${user}`}
           </h3>
-          <h3 className="header-infos">TrybeWallet</h3>
           <h3 data-testid="total-field" className="header-infos">
             {`Total: ${totalPrice} BRL`}
           </h3>
-          {/* <h2 data-testid="header-currency-field" className="header-infos">
-            BRL
-          </h2> */}
         </div>
         <form className="form-expenses">
           <label htmlFor="value">
-            Valor:
+            <h3>Valor:</h3>
             <input
               type="number"
               id="value"
@@ -107,7 +111,7 @@ class Wallet extends React.Component {
             />
           </label>
           <label htmlFor="currency" aria-label="Moeda">
-            Moeda
+            <h3>Moeda</h3>
             <select
               id="currency"
               name="currency"
@@ -127,7 +131,7 @@ class Wallet extends React.Component {
           <label
             htmlFor="method"
           >
-            Metodo de pagamento:
+            <h3>Metodo de pagamento:</h3>
             <select
               data-testid="method-input"
               id="method"
@@ -144,7 +148,7 @@ class Wallet extends React.Component {
           <label
             htmlFor="tag"
           >
-            Categoria:
+            <h3>Categoria:</h3>
             <select
               data-testid="tag-input"
               id="tag"
@@ -161,7 +165,7 @@ class Wallet extends React.Component {
             </select>
           </label>
           <label htmlFor="description">
-            Descrição:
+            <h3>Descrição:</h3>
             <input
               type="text"
               id="description"
@@ -180,8 +184,8 @@ class Wallet extends React.Component {
             Adicionar despesa
           </button>
         </form>
-        <Table />
-      </>
+        <Table subtractTotal={ this.subtractTotal } />
+      </div>
     );
   }
 }
@@ -196,7 +200,9 @@ const mapStateToProps = (state) => {
 Wallet.propTypes = {
   user: PropTypes.string.isRequired,
   wallet: PropTypes.shape({
-    expenses: PropTypes.arrayOf(PropTypes.shape.isRequired),
+    expenses: PropTypes.arrayOf(PropTypes.shape(
+      PropTypes.string.isRequired,
+    ).isRequired),
     currencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,

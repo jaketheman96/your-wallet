@@ -39,7 +39,15 @@ class Login extends React.Component {
     return (
       <div className="login">
         <form className="loginForm">
-          <div className="wallet-image">
+          <div
+            className="wallet-image"
+            style={ { display: 'flex' } }
+          >
+            <h1
+              style={ { color: 'grey' } }
+            >
+              YourWallet!
+            </h1>
             <img
               src="https://media.discordapp.net/attachments/971614587029954591/994040120258867220/Design_sem_nome-removebg-preview.png"
               alt="wallet"

@@ -1,4 +1,5 @@
 const ADD_EMAIL = 'ADD_EMAIL';
+const DELETE_ITEM = 'DELETE_ITEM';
 
 const addEmail = (email) => ({
   type: ADD_EMAIL,
@@ -41,3 +42,8 @@ export const addExpenses = (allInfos) => async (dispatch) => {
     payload: allInfos,
   });
 };
+
+export const deleteItem = (index) => ({
+  type: DELETE_ITEM,
+  payload: index,
+});

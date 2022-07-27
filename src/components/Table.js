@@ -1,8 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deleteItem } from '../actions/index';
 
 class Table extends React.Component {
+  handleClick = ({ target }) => {
+    const { dispatch, subtractTotal } = this.props;
+    const { id, value } = target;
+    dispatch(deleteItem(id));
+    subtractTotal(value);
+  }
+
   render() {
     const { expenses } = this.props;
     return (
@@ -17,7 +25,7 @@ class Table extends React.Component {
             <th>Câmbio utilizado</th>
             <th>Valor convertido</th>
             <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
+            <th>Excluir</th>
           </tr>
         </thead>
         <tbody>
@@ -41,13 +49,25 @@ class Table extends React.Component {
               <td>
                 {Number(element.exchangeRates[element.currency].ask).toFixed(2)}
               </td>
-              <td>
-                {Number(element.value * element.exchangeRates[element.currency].ask)
-                  .toFixed(2)}
+              <td id="value-converted">
+                {`${Number(element.value * element.exchangeRates[element.currency].ask)
+                  .toFixed(2)} BRL`}
               </td>
-              <td>Real</td>
               <td>
                 {element.exchangeRates[element.currency].name}
+              </td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ this.handleClick }
+                  id={ element.id }
+                  value={
+                    Number(element.value * element.exchangeRates[element.currency].ask)
+                  }
+                >
+                  X
+                </button>
               </td>
             </tr>
           ))}
@@ -58,7 +78,11 @@ class Table extends React.Component {
 }
 
 Table.propTypes = {
-  expenses: PropTypes.shape.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape(
+    PropTypes.string.isRequired,
+  ).isRequired).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  subtractTotal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
